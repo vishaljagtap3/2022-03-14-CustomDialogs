@@ -17,11 +17,22 @@ public class LoginDialog extends Dialog {
     private int maxLoginAttempts = 3;
     private int attemptsCount = 0;
 
-    private MainActivity.LoginActions loginActions = null;
-
-    public void setLoginActions(MainActivity.LoginActions loginActions) {
-        this.loginActions = loginActions;
+    public interface OnLoginListener {
+        void onSuccess();
+        void onFailure();
+        void onMaxAttempts();
     }
+
+    private OnLoginListener onLoginListener = null;
+    public void setOnLoginListener(OnLoginListener onLoginListener) {
+        this.onLoginListener = onLoginListener;
+    }
+
+    //private MainActivity.LoginActions loginActions = null;
+
+    /*public void setLoginActions(MainActivity.LoginActions loginActions) {
+        this.loginActions = loginActions;
+    }*/
 
     public void setMaxLoginAttempts(int maxLoginAttempts) {
         if(maxLoginAttempts > 0) {
@@ -42,7 +53,24 @@ public class LoginDialog extends Dialog {
     private class BtnSignInClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if(loginActions == null) {
+
+            if(onLoginListener == null) {
+                return;
+            }
+            if(edtUsername.getText().toString().equals("bitcode")) {
+                onLoginListener.onSuccess();
+            }
+            else {
+                attemptsCount++;
+                if(attemptsCount >= maxLoginAttempts) {
+                    onLoginListener.onMaxAttempts();
+                    return;
+                }
+                onLoginListener.onFailure();
+            }
+
+
+            /*if(loginActions == null) {
                 return;
             }
 
@@ -57,7 +85,7 @@ public class LoginDialog extends Dialog {
                 }
                 loginActions.failed();
 
-            }
+            }*/
 
             //validate credentials
             /*if(edtUsername.getText().toString().equals("bitcode")) {

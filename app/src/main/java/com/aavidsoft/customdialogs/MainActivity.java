@@ -25,10 +25,29 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 LoginDialog loginDialog = new LoginDialog(MainActivity.this);
                 loginDialog.setMaxLoginAttempts(2);
-                loginDialog.setLoginActions(new LoginActions());
+                //loginDialog.setLoginActions(new LoginActions());
+                loginDialog.setOnLoginListener(new MyLoginListener());
                 loginDialog.show();
             }
         });
+    }
+
+    class MyLoginListener implements LoginDialog.OnLoginListener {
+
+        @Override
+        public void onSuccess() {
+            mt("My Success Action");
+        }
+
+        @Override
+        public void onFailure() {
+            mt("My Failed Action");
+        }
+
+        @Override
+        public void onMaxAttempts() {
+            mt("My max attempts Action");
+        }
     }
 
     class LoginActions {
