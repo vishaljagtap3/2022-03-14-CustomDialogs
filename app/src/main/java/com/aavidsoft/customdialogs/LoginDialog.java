@@ -17,6 +17,12 @@ public class LoginDialog extends Dialog {
     private int maxLoginAttempts = 3;
     private int attemptsCount = 0;
 
+    private MainActivity.LoginActions loginActions = null;
+
+    public void setLoginActions(MainActivity.LoginActions loginActions) {
+        this.loginActions = loginActions;
+    }
+
     public void setMaxLoginAttempts(int maxLoginAttempts) {
         if(maxLoginAttempts > 0) {
             this.maxLoginAttempts = maxLoginAttempts;
@@ -36,9 +42,25 @@ public class LoginDialog extends Dialog {
     private class BtnSignInClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            if(loginActions == null) {
+                return;
+            }
+
+            if(edtUsername.getText().toString().equals("bitcode")) {
+               loginActions.success();
+            }
+            else {
+                attemptsCount++;
+                if(attemptsCount >= maxLoginAttempts) {
+                   loginActions.maxAttempts();
+                    return;
+                }
+                loginActions.failed();
+
+            }
 
             //validate credentials
-            if(edtUsername.getText().toString().equals("bitcode")) {
+            /*if(edtUsername.getText().toString().equals("bitcode")) {
                 mt("Success");
                 dismiss();
             }
@@ -50,7 +72,7 @@ public class LoginDialog extends Dialog {
                     return;
                 }
                 mt("Failed");
-            }
+            }*/
         }
     }
 

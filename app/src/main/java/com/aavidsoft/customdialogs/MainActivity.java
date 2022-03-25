@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,8 +25,27 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 LoginDialog loginDialog = new LoginDialog(MainActivity.this);
                 loginDialog.setMaxLoginAttempts(2);
+                loginDialog.setLoginActions(new LoginActions());
                 loginDialog.show();
             }
         });
+    }
+
+    class LoginActions {
+        public void success() {
+            mt("MainActivity success action");
+        }
+
+        public void failed() {
+            mt("MainActivity failed action");
+        }
+
+        public void maxAttempts() {
+            mt("Main Activity Max attempts action");
+        }
+    }
+
+    private void mt(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 }
