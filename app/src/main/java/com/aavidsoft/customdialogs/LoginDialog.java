@@ -18,9 +18,9 @@ public class LoginDialog extends Dialog {
     private int attemptsCount = 0;
 
     public interface OnLoginListener {
-        void onSuccess();
-        void onFailure();
-        void onMaxAttempts();
+        void onSuccess(LoginDialog loginDialog);
+        void onFailure(LoginDialog loginDialog);
+        void onMaxAttempts(LoginDialog loginDialog);
     }
 
     private OnLoginListener onLoginListener = null;
@@ -58,15 +58,15 @@ public class LoginDialog extends Dialog {
                 return;
             }
             if(edtUsername.getText().toString().equals("bitcode")) {
-                onLoginListener.onSuccess();
+                onLoginListener.onSuccess(LoginDialog.this);
             }
             else {
                 attemptsCount++;
                 if(attemptsCount >= maxLoginAttempts) {
-                    onLoginListener.onMaxAttempts();
+                    onLoginListener.onMaxAttempts(LoginDialog.this);
                     return;
                 }
-                onLoginListener.onFailure();
+                onLoginListener.onFailure(LoginDialog.this);
             }
 
 
